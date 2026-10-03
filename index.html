@@ -1,0 +1,398 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Encuesta FAM Sede Nuevo León</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: una columna de lectura (680px) para contestar en el teléfono; el panel de resultados se abre a 980px. */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#15202c; --muted:#586574; --line:#d9dfe6;
+  --accent:#d9500a; --accent-ink:#ffffff; --accent-soft:#fde9dc; --steel:#1f4460; --steel-soft:#e4edf4;
+  --good:#1d7a4f; --warn:#a15c00; --bad:#b3261e;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Barlow","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f151c; --surface:#18212b; --ink:#e8edf2; --muted:#9aa7b5; --line:#2b3744;
+  --accent:#ff7b33; --accent-ink:#1c0d03; --accent-soft:#3b2414; --steel:#9cc3e2; --steel-soft:#1d2c3a;
+  --good:#5fcf9a; --warn:#f0b35a; --bad:#ff8a80; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0f151c; --surface:#18212b; --ink:#e8edf2; --muted:#9aa7b5; --line:#2b3744;
+  --accent:#ff7b33; --accent-ink:#1c0d03; --accent-soft:#3b2414; --steel:#9cc3e2; --steel-soft:#1d2c3a;
+  --good:#5fcf9a; --warn:#f0b35a; --bad:#ff8a80; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:680px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+.wrap.wide{max-width:980px}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
+
+.top{padding-block:28px 4px;display:flex;flex-direction:column;gap:6px}
+.eyebrow{font:600 13px/1.2 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 clamp(34px,8vw,48px)/1 var(--display);margin:0;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.lead{color:var(--muted);margin:0;max-width:60ch}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tab{border:1px solid var(--line);background:var(--surface);padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:500}
+.tab[aria-selected="true"]{background:var(--steel);border-color:var(--steel);color:var(--bg)}
+
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;flex-direction:column;gap:6px}
+.progress .row{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--muted)}
+.progress b{color:var(--ink);font-weight:600}
+.track{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);transition:width .25s}
+@media (prefers-reduced-motion:reduce){.track i{transition:none}}
+
+h2{font:700 30px/1.05 var(--display);text-transform:uppercase;margin:0;text-wrap:balance}
+.secintro{color:var(--muted);margin:4px 0 0}
+.qs{display:flex;flex-direction:column;gap:14px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.q.missing{border-color:var(--bad)}
+.q h3{font:600 17px/1.3 var(--body);margin:0;text-wrap:balance}
+.q .hint{color:var(--muted);font-size:14px;margin:-6px 0 0}
+.opt{font-weight:400;color:var(--muted);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--bg);padding:9px 14px;border-radius:8px;cursor:pointer;text-align:left;min-height:42px}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);font-weight:600}
+.scale{display:flex;gap:6px}
+.scale button{flex:1 1 0;min-width:0;min-height:44px;border:1px solid var(--line);background:var(--bg);border-radius:8px;cursor:pointer;font-weight:600;font-variant-numeric:tabular-nums;padding:0}
+.scale button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.scale button.na{flex:1.6 1 0;font-weight:500;font-size:13px}
+.scale button.na[aria-pressed="true"]{background:var(--steel);border-color:var(--steel);color:var(--bg)}
+.ends{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:-6px}
+.items{display:flex;flex-direction:column;gap:14px}
+.item{display:flex;flex-direction:column;gap:6px}
+.item span{font-size:15px}
+.item.miss span{color:var(--bad)}
+.grp{font:600 12px/1.2 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--steel);padding-top:6px;border-top:1px solid var(--line)}
+.grp:first-child{border-top:0;padding-top:0}
+input[type=text],textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:10px 12px}
+textarea{min-height:84px;resize:vertical}
+.nav{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);padding:12px 22px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.small{padding:6px 12px;font-size:14px;font-weight:500}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{color:var(--bad);font-size:14px;margin:0}
+.note{color:var(--muted);font-size:14px;margin:0}
+.code{font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;word-break:break-all;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;max-height:160px;overflow:auto;user-select:all}
+
+/* resultados */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.kpi .n{font:700 40px/1 var(--display);font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi .s{font-size:13px;color:var(--steel)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h3{font:700 22px/1.1 var(--display);text-transform:uppercase;margin:0}
+.panel p{margin:0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 10px 7px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+td.num,th.num{text-align:right;white-space:nowrap}
+.bar{display:flex;align-items:center;gap:8px;min-width:120px}
+.bar div{flex:1;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.bar.alt i{background:var(--steel)}
+.bar b{font-weight:600;width:34px;text-align:right}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.tag.good{color:var(--good)} .tag.warn{color:var(--warn)} .tag.mut{color:var(--muted)}
+.quotes{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.quotes li{border-left:3px solid var(--line);padding-left:10px;font-size:15px}
+.empty{color:var(--muted)}
+</style>
+
+<div class="wrap" id="wrap">
+  <header class="top">
+    <div class="eyebrow">FAM Trip · 1 al 3 de octubre de 2026</div>
+    <h1>Sede Nuevo León</h1>
+    <p class="lead" id="lead">Queremos saber cómo viviste estos tres días y qué pesaría para que elijas Nuevo León como sede de tus próximos eventos. Toma unos 4 minutos.</p>
+    <div class="tabs" id="tabs" role="tablist" hidden>
+      <button class="tab" role="tab" id="tab-enc" aria-selected="true">Encuesta</button>
+      <button class="tab" role="tab" id="tab-res" aria-selected="false">Resultados</button>
+    </div>
+  </header>
+  <main id="view-enc"></main>
+  <main id="view-res" hidden></main>
+</div>
+
+<script>
+"use strict";
+/* ---------- Instrumento ---------- */
+const ATR=[["con","Conectividad aérea y traslados"],["rec","Recintos y espacios para eventos"],["gas","Oferta gastronómica"],["seg","Seguridad percibida"],["hos","Hospitalidad y calidad del servicio"],["ocv","Acompañamiento de la OCV Monterrey"]];
+const FAC=[["con","Conectividad aérea y accesos"],["rec","Recintos y espacios para eventos"],["hot","Oferta hotelera"],["gas","Gastronomía"],["seg","Seguridad percibida"],["mov","Movilidad y traslados dentro de la ciudad"],["exp","Experiencias y oferta cultural"],["hos","Hospitalidad y calidad del servicio"],["cos","Relación costo-valor"],["ide","Identidad y carácter propio del destino"],["prv","Proveedores y profesionales locales"],["ocv","Acompañamiento de la OCV Monterrey"]];
+const SEDES=[["hpi","Hotel Presidente InterContinental","Día 1"],["psl","Paseo Santa Lucía · recorrido en embarcación","Día 1"],["hor","Horno³ · comida y presentación","Día 1"],["fun","Parque Fundidora","Día 1"],["tec","Tec Venues","Día 1"],["sho","Showcenter Complex","Día 2"],["mil","Museo La Milarca","Día 2"],["pab","Pabellón M","Día 2"],["nor","Noche Norteña · Sociedad Mexicana de Parrilleros","Día 2"],["bbv","Estadio BBVA · Experiencia Rayada","Día 3"],["car","Centro de Alto Rendimiento (CARE)","Día 3"]];
+const FAM=[["log","Logística y puntualidad de los traslados"],["rit","Ritmo y tiempos del programa"],["sel","Sedes"],["hsp","Hospedaje"],["ali","Alimentos y bebidas"],["pre","Presentación de la OCV Monterrey"],["equ","Atención del equipo anfitrión"],["net","Oportunidades de networking"]];
+const E5=["Muy mala","Excelente"], P5=["Muy desfavorable","Muy favorable"];
+
+const S=[
+{id:"perfil",t:"Tu perfil",d:"Nos ayuda a leer tus respuestas en contexto.",q:[
+ {k:"org",type:"one",req:1,t:"¿Qué tipo de organización representas?",o:[["age","Agencia o meeting planner"],["cor","Corporativo"],["aso","Asociación o colegio profesional"],["inc","Casa de incentivos"],["dmc","DMC u operador"],["otr","Otro"]]},
+ {k:"evt",type:"many",req:1,t:"¿Qué tipos de evento organizas?",h:"Elige todos los que apliquen.",o:[["cng","Congresos"],["cnv","Convenciones"],["crp","Eventos corporativos"],["inc","Viajes de incentivo"],["exp","Exposiciones y ferias"],["dep","Eventos deportivos"],["cul","Culturales o de entretenimiento"],["soc","Sociales"]]},
+ {k:"tam",type:"one",req:1,t:"¿De qué tamaño suelen ser tus eventos?",o:[["a","Menos de 100 asistentes"],["b","100 a 300"],["c","301 a 1,000"],["d","1,001 a 3,000"],["e","Más de 3,000"]]},
+ {k:"pri",type:"one",req:1,t:"¿Es la primera vez que visitas Monterrey?",o:[["si","Sí"],["no","No"]]}
+]},
+{id:"destino",t:"Monterrey como destino",d:"Tu percepción del destino para congresos, convenciones y eventos.",q:[
+ {k:"atr",type:"matrix",req:1,t:"¿Cómo calificas a Monterrey como sede, a partir de los siguientes aspectos?",h:"1 = muy mal · 5 = excelente",items:ATR}
+]},
+{id:"sedes",t:"Espacios y experiencias",d:"Lo que recorrimos, en el orden del programa.",q:[
+ {k:"sed",type:"matrix",req:1,na:1,t:"Califica cada espacio o experiencia como opción para tus eventos",h:"1 = lo que menos me gustó · 5 = lo que más me gustó. Marca «No fui» si no asististe.",items:SEDES}
+]},
+{id:"fam",t:"Organización del FAM Trip",d:"Cómo funcionó el viaje en sí.",q:[
+ {k:"fam",type:"matrix",req:1,t:"Califica cada aspecto del FAM Trip",h:"1 = muy mal · 5 = excelente",items:FAM},
+ {k:"sat",type:"scale",req:1,t:"En general, ¿qué tan satisfecho quedaste con el FAM Trip?",ends:["Nada satisfecho","Muy satisfecho"]}
+]},
+{id:"decision",t:"Tu decisión",d:"Qué te haría elegir Nuevo León, y qué te frenaría.",q:[
+ {k:"fac",type:"many",req:1,max:3,t:"Al elegir sede para un evento, ¿qué factores pesan más para ti?",h:"Elige hasta tres.",o:FAC},
+ {k:"bar",type:"many",t:"¿Qué podría frenar que elijas Nuevo León?",h:"Elige todos los que apliquen.",o:[["cos","Costos del destino"],["seg","Percepción de seguridad de mis clientes"],["con","Conectividad aérea desde mi mercado"],["cap","Capacidad o disponibilidad de recintos"],["hot","Disponibilidad o tarifas hoteleras"],["mov","Distancias y traslados entre sedes"],["cli","Clima"],["des","Mis clientes conocen poco el destino"],["pre","Mis clientes prefieren playa u otro tipo de destino"],["nin","Ninguna"]]},
+ {k:"apo",type:"many",req:1,max:4,t:"¿Qué apoyo de la OCV Monterrey te ayudaría a concretar un evento?",h:"Elige 4 opciones.",o:[["pro","Promoción del evento"],["dis","Diseño gráfico"],["pan","Pantallas en aeropuerto"],["pre","Ruedas de prensa"],["aco","Programa de acompañantes"],["gui","Guías turísticas"],["app","App Pasaporte Nuevo León"],["far","Fara Fara"],["exp","Diseño de experiencias de aventura y culturales"],["ase","Asesoría y acompañamiento"],["vin","Vinculación con proveeduría"],["rec","Recintos sin costo o con descuento"],["med","Atención médica en ambulancias"]]}
+]},
+{id:"cierre",t:"Conecta con la OCV Monterrey",d:"Sigamos en contacto.",q:[
+ {k:"nom",type:"text",req:1,t:"Nombre"},
+ {k:"emp",type:"text",req:1,t:"Empresa u organización"},
+ {k:"com",type:"area",t:"Ayúdanos a mejorar, déjanos un comentario."}
+]}];
+const QS=S.flatMap(s=>s.q), QK=Object.fromEntries(QS.map(q=>[q.k,q]));
+
+/* ---------- Estado ---------- */
+const DRAFT="fam-nl-borrador";
+let ans={}, rid=newRid(), step=0, done=null;
+let db=null, downloads=null, canWrite=false, rows=[], toolsNode=null;
+function newRid(){const c="abcdefghijkmnpqrstuvwxyz23456789";let s="";const a=new Uint8Array(12);crypto.getRandomValues(a);for(const n of a)s+=c[n%c.length];return s}
+try{const d=JSON.parse(localStorage.getItem(DRAFT)||"null");if(d&&d.rid&&d.ans){ans=d.ans;rid=d.rid;step=Math.min(d.step||0,S.length-1)}}catch(e){}
+function saveDraft(){try{localStorage.setItem(DRAFT,JSON.stringify({rid,ans,step}))}catch(e){}}
+function clearDraft(){try{localStorage.removeItem(DRAFT)}catch(e){}}
+
+const $=id=>document.getElementById(id);
+function el(tag,props,...kids){const n=document.createElement(tag);if(props)for(const k in props){if(k==="class")n.className=props[k];else if(k.startsWith("on"))n.addEventListener(k.slice(2),props[k]);else if(k==="text")n.textContent=props[k];else n.setAttribute(k,props[k])}for(const c of kids)if(c!=null)n.append(c);return n}
+
+/* ---------- Encuesta ---------- */
+function missingItems(q){
+  const v=ans[q.k];
+  if(q.type==="matrix")return q.items.filter(it=>!(v&&v[it[0]]!=null)).map(it=>it[0]);
+  if(q.type==="many")return (v&&v.length)?[]:[q.k];
+  return (v==null||String(v).trim()==="")?[q.k]:[];
+}
+function scaleRow(lo,hi,val,onPick,na){
+  const r=el("div",{class:"scale",role:"group"});
+  for(let i=lo;i<=hi;i++)r.append(el("button",{type:"button","aria-pressed":String(val===i),text:String(i),onclick:()=>onPick(i)}));
+  if(na)r.append(el("button",{type:"button",class:"na","aria-pressed":String(val===0),text:"No fui",onclick:()=>onPick(0)}));
+  return r;
+}
+function renderQ(q,flag){
+  const box=el("section",{class:"q","data-k":q.k});
+  const redo=()=>{saveDraft();box.replaceWith(renderQ(q,false));updateProgress()};
+  const title=el("h3",{text:q.t});
+  if(!q.req)title.append(" ",el("span",{class:"opt",text:"(opcional)"}));
+  box.append(title);
+  if(q.h)box.append(el("p",{class:"hint",text:q.h}));
+  const miss=flag&&q.req?missingItems(q):[];
+  if(miss.length)box.classList.add("missing");
+  if(q.type==="one"||q.type==="many"){
+    const c=el("div",{class:"chips"});
+    for(const o of q.o){
+      const on=q.type==="one"?ans[q.k]===o[0]:(ans[q.k]||[]).includes(o[0]);
+      c.append(el("button",{type:"button",class:"chip","aria-pressed":String(on),text:o[1],onclick:()=>{
+        if(q.type==="one"){ans[q.k]=on&&!q.req?undefined:o[0]}
+        else{let a=(ans[q.k]||[]).slice();if(on)a=a.filter(x=>x!==o[0]);else{if(q.max&&a.length>=q.max)return;a.push(o[0])}ans[q.k]=a}
+        redo()}}));
+    }
+    box.append(c);
+  }else if(q.type==="scale"||q.type==="nps"){
+    box.append(scaleRow(q.type==="nps"?0:1,q.type==="nps"?10:5,ans[q.k],v=>{ans[q.k]=v;redo()}));
+    if(q.ends)box.append(el("div",{class:"ends"},el("span",{text:q.ends[0]}),el("span",{text:q.ends[1]})));
+  }else if(q.type==="matrix"){
+    const list=el("div",{class:"items"});let g=null;
+    for(const it of q.items){
+      if(it[2]&&it[2]!==g){g=it[2];list.append(el("div",{class:"grp",text:g}))}
+      const cur=ans[q.k]?ans[q.k][it[0]]:undefined;
+      list.append(el("div",{class:"item"+(miss.includes(it[0])?" miss":"")},el("span",{text:it[1]}),
+        scaleRow(1,5,cur,v=>{ans[q.k]=Object.assign({},ans[q.k],{[it[0]]:v});redo()},q.na)));
+    }
+    box.append(list);
+  }else{
+    const inp=el(q.type==="area"?"textarea":"input",{id:"f-"+q.k,maxlength:q.type==="area"?"600":"160","aria-label":q.t,placeholder:q.ph||""});
+    if(q.type!=="area")inp.type="text";
+    inp.value=ans[q.k]||"";
+    inp.addEventListener("input",()=>{ans[q.k]=inp.value;saveDraft()});
+    box.append(inp);
+  }
+  return box;
+}
+function answeredCount(){let t=0,d=0;for(const q of QS){if(!q.req)continue;const n=q.type==="matrix"?q.items.length:1;t+=n;d+=n-missingItems(q).length}return [d,t]}
+function updateProgress(){const p=$("pfill");if(!p)return;const [d,t]=answeredCount();p.style.width=Math.round(d/t*100)+"%"}
+function renderSurvey(flag){
+  const v=$("view-enc");v.textContent="";
+  if(done){v.append(done);return}
+  const s=S[step];
+  v.append(el("div",{class:"progress"},
+    el("div",{class:"row"},el("span",null,el("b",{text:"Sección "+(step+1)})," de "+S.length),el("span",{text:s.t})),
+    el("div",{class:"track"},el("i",{id:"pfill"}))));
+  const body=el("div",{class:"qs"});
+  body.append(el("div",null,el("h2",{text:s.t}),el("p",{class:"secintro",text:s.d})));
+  for(const q of s.q)body.append(renderQ(q,flag));
+  const msg=el("p",{class:"msg",id:"msg",role:"alert"});
+  const next=el("button",{type:"button",class:"btn primary",text:step===S.length-1?"Enviar respuestas":"Siguiente",onclick:()=>go(1)});
+  const back=el("button",{type:"button",class:"btn",text:"Anterior",onclick:()=>go(-1)});if(step===0)back.disabled=true;
+  body.append(msg,el("div",{class:"nav"},back,next));
+  v.append(body);updateProgress();
+}
+function go(dir){
+  if(dir>0){
+    const n=S[step].q.filter(q=>q.req).reduce((a,q)=>a+missingItems(q).length,0);
+    if(n){renderSurvey(true);$("msg").textContent=n===1?"Falta una respuesta en esta sección.":"Faltan "+n+" respuestas en esta sección.";
+      const f=document.querySelector(".q.missing");if(f)f.scrollIntoView({block:"center"});return}
+    if(step===S.length-1){submit();return}
+  }
+  step=Math.max(0,step+dir);saveDraft();renderSurvey(false);window.scrollTo(0,0);
+}
+
+/* ---------- Envío ---------- */
+function clean(a){const o={};for(const q of QS){const v=a[q.k];if(v==null||v===""||(Array.isArray(v)&&!v.length))continue;o[q.k]=typeof v==="string"?v.trim().slice(0,600):v}return o}
+function encode(rec){const b=new TextEncoder().encode(JSON.stringify(rec));let s="";for(const x of b)s+=String.fromCharCode(x);return "FAMNL1:"+btoa(s).replace(/\+/g,"-").replace(/\//g,"_")}
+function decode(code){const s=atob(code.replace(/-/g,"+").replace(/_/g,"/"));const b=new Uint8Array(s.length);for(let i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return JSON.parse(new TextDecoder().decode(b))}
+async function submit(){
+  const rec={v:1,rid,ts:new Date().toISOString(),a:clean(ans)};
+  $("msg").textContent="Enviando…";
+  await ready;
+  let saved=false;
+  if(canWrite){try{await db.collection("respuestas").doc(rid).set(Object.assign({via:"directo"},rec));saved=true}catch(e){}}
+  clearDraft();
+  const box=el("div",{class:"qs"});
+  box.append(el("div",null,el("h2",{text:"Gracias por tu tiempo"}),el("p",{class:"secintro",text:saved?"La respuesta quedó registrada.":"Falta un paso para que tu opinión nos llegue."})));
+  if(saved){
+    box.append(el("div",{class:"nav"},el("button",{type:"button",class:"btn primary",text:"Capturar otra respuesta",onclick:reset})));
+  }else{
+    const code=encode(rec), pre=el("div",{class:"code",id:"code",text:code}), st=el("p",{class:"note",role:"status"});
+    box.append(el("section",{class:"q"},
+      el("h3",{text:"Copia este código y envíalo a tu anfitrión del FAM Trip"}),
+      el("p",{class:"hint",text:"Pégalo tal cual en WhatsApp o en un correo. Contiene tus respuestas; no hace falta escribir nada más."}),
+      pre,
+      el("div",{class:"nav"},el("button",{type:"button",class:"btn primary",text:"Copiar código",onclick:async()=>{
+        try{await navigator.clipboard.writeText(code);st.textContent="Código copiado."}
+        catch(e){const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);st.textContent="Código seleccionado. Cópialo con el menú de tu teléfono."}}})),
+      st));
+  }
+  done=box;renderSurvey(false);window.scrollTo(0,0);
+}
+function reset(){ans={};rid=newRid();step=0;done=null;renderSurvey(false);window.scrollTo(0,0)}
+
+/* ---------- Resultados ---------- */
+const A=r=>(r&&typeof r.a==="object"&&r.a)||{};
+const nums=(k,lo,hi)=>rows.map(r=>A(r)[k]).filter(v=>typeof v==="number"&&v>=lo&&v<=hi);
+const mnums=(k,i)=>rows.map(r=>{const m=A(r)[k];return m&&typeof m==="object"?m[i]:null}).filter(v=>typeof v==="number"&&v>=1&&v<=5);
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+const f1=v=>v==null?"–":v.toFixed(1);
+const pct=(n,d)=>d?Math.round(n/d*100):0;
+const count=(k,c)=>rows.filter(r=>{const v=A(r)[k];return Array.isArray(v)?v.includes(c):v===c}).length;
+const label=(q,c)=>{const o=(q.o||[]).find(x=>x[0]===c);return o?o[1]:String(c).slice(0,40)};
+function bar(value,max,txt,alt){const b=el("div",{class:"bar"+(alt?" alt":"")});const i=el("i");i.style.width=Math.max(0,Math.min(100,max?value/max*100:0))+"%";b.append(el("div",null,i),el("b",{text:txt}));return b}
+function table(heads,body){const t=el("table"),h=el("tr");heads.forEach(x=>h.append(el("th",{class:x[1]||"",text:x[0]})));t.append(el("thead",null,h));const tb=el("tbody");body.forEach(r=>{const tr=el("tr");r.forEach((c,i)=>{const td=el("td",{class:heads[i][1]||""});td.append(c==null?"":c);tr.append(td)});tb.append(tr)});t.append(tb);return el("div",{class:"scroll"},t)}
+function panel(title,note,...kids){const p=el("section",{class:"panel"},el("h3",{text:title}));if(note)p.append(el("p",{class:"note",text:note}));kids.forEach(k=>k&&p.append(k));return p}
+function countPanel(k,title,note){const q=QK[k],n=rows.length;const d=q.o.map(o=>[o[1],count(k,o[0])]).sort((a,b)=>b[1]-a[1]);
+  return panel(title,note,table([["Opción"],["Participantes"]],d.map(x=>[x[0],bar(x[1],n,pct(x[1],n)+"%",true)])))}
+function avgPanel(k,items,title,note){const d=items.map(it=>[it[1],avg(mnums(k,it[0]))]).sort((a,b)=>(b[1]||0)-(a[1]||0));
+  return panel(title,note,table([["Aspecto"],["Promedio (1 a 5)"]],d.map(x=>[x[0],bar(x[1]||0,5,f1(x[1]))])))}
+function quotes(k,title){const l=rows.map(r=>A(r)[k]).filter(v=>typeof v==="string"&&v.trim());const ul=el("ul",{class:"quotes"});l.forEach(t=>ul.append(el("li",{text:t.slice(0,600)})));
+  return panel(title,null,l.length?ul:el("p",{class:"empty",text:"Sin comentarios todavía."}))}
+
+function renderResults(){
+  const v=$("view-res");v.textContent="";const n=rows.length;
+  if(!toolsNode){
+    toolsNode=el("section",{class:"panel"},el("h3",{text:"Registrar respuestas recibidas"}),
+      el("p",{class:"note",text:"Pega aquí los códigos que te envíen los participantes (uno o varios a la vez). Las respuestas capturadas en este dispositivo se guardan solas."}));
+    const ta=el("textarea",{id:"imp","aria-label":"Códigos de respuesta",placeholder:"FAMNL1:…"}), st=el("p",{class:"note",role:"status"});
+    toolsNode.append(ta,el("div",{class:"nav"},
+      el("button",{type:"button",class:"btn primary",text:"Registrar códigos",onclick:()=>importCodes(ta,st)}),
+      downloads?el("button",{type:"button",class:"btn",text:"Descargar respuestas (CSV)",onclick:()=>csv(st)}):null),st);
+  }
+  const tools=toolsNode;
+  const out=el("div",{class:"qs"});
+  out.append(el("div",null,el("h2",{text:"Resultados"}),el("p",{class:"secintro",text:n?n+(n===1?" respuesta registrada":" respuestas registradas")+" de 40 participantes.":"Aún no hay respuestas. Los indicadores aparecerán aquí conforme se registren."})),tools);
+  if(!n){v.append(out);return}
+
+  const kpi=(num,l,s)=>el("div",{class:"kpi"},el("div",{class:"n",text:num}),el("div",{class:"l",text:l}),s?el("div",{class:"s",text:s}):null);
+  const tx=(r,k)=>typeof A(r)[k]==="string"?A(r)[k].slice(0,200):"";
+  const leads=rows.filter(r=>tx(r,"nom")||tx(r,"emp"));
+  out.append(el("div",{class:"kpis"},
+    kpi(f1(avg(nums("sat",1,5))),"Satisfacción con el FAM","de 5"),
+    kpi(f1(avg(ATR.flatMap(a=>mnums("atr",a[0])))),"Monterrey como destino","de 5 · promedio de los 6 aspectos"),
+    kpi(f1(avg(SEDES.flatMap(a=>mnums("sed",a[0])))),"Espacios y experiencias","de 5 · promedio de las 11 paradas"),
+    kpi(pct(count("pri","si"),n)+"%","Primera visita a Monterrey",null)));
+
+  // Sedes
+  const sd=SEDES.map(s=>{const r=mnums("sed",s[0]);return {n:s[1],a:avg(r),v:r.length}}).sort((a,b)=>(b.a||0)-(a.a||0));
+  out.append(panel("Espacios y experiencias","Calificación promedio, de mayor a menor (1 = lo que menos gustó, 5 = lo que más gustó).",
+    table([["Espacio o experiencia"],["Calificación (1 a 5)"],["Asistieron","num"]],sd.map(x=>[x.n,bar(x.a||0,5,f1(x.a)),String(x.v)]))));
+
+  // Importancia vs desempeño
+  const imp=FAC.map(a=>({n:a[1],i:pct(count("fac",a[0]),n),p:avg(mnums("atr",a[0]))})).sort((a,b)=>b.i-a.i);
+  const med=imp.map(x=>x.i).sort((a,b)=>a-b)[Math.floor(imp.length/2)];
+  const tag=x=>x.p==null?null:x.i>=med&&x.i>0?(x.p<4?el("span",{class:"tag warn",text:"Brecha a atender"}):el("span",{class:"tag good",text:"Fortaleza para vender"})):(x.p>=4?el("span",{class:"tag mut",text:"Ventaja poco valorada"}):el("span",{class:"tag mut",text:"Prioridad baja"}));
+  out.append(panel("Atributos del destino: importancia frente a desempeño","Importancia es el porcentaje que eligió el factor entre los tres que más pesan al escoger sede. Desempeño es la calificación promedio que dieron a Monterrey; solo aparece en los aspectos que se califican en la encuesta.",
+    table([["Atributo"],["Importancia"],["Desempeño (1 a 5)"],["Lectura"]],imp.map(x=>[x.n,bar(x.i,100,x.i+"%",true),bar(x.p||0,5,f1(x.p)),tag(x)]))));
+
+  out.append(el("div",{class:"two"},
+    countPanel("bar","Barreras","Qué podría frenar la elección de Nuevo León."),
+    countPanel("apo","Apoyos que piden a la OCV","Qué les ayudaría a concretar un evento.")));
+  out.append(el("div",{class:"two"},avgPanel("fam",FAM,"Organización del FAM Trip",null),countPanel("org","Quién respondió",null)));
+  out.append(el("div",{class:"two"},countPanel("tam","Tamaño de sus eventos",null),countPanel("evt","Tipos de evento que organizan",null)));
+  out.append(panel("Participantes","Nombre y empresa de quienes respondieron.",
+    leads.length?table([["Nombre"],["Empresa"],["Organización"]],
+      leads.map(r=>[tx(r,"nom")||"Sin nombre",tx(r,"emp"),A(r).org?label(QK.org,A(r).org):""])):el("p",{class:"empty",text:"Nadie ha dejado sus datos todavía."})));
+
+  out.append(quotes("com","Comentarios para mejorar"));
+
+  // Respuestas individuales
+  out.append(panel("Respuestas registradas","Elimina aquí las respuestas de prueba o duplicadas.",
+    table([["Fecha"],["Nombre"],["Organización"],["Origen"],[""]],rows.map(r=>{
+      const b=el("button",{type:"button",class:"btn small",text:"Eliminar"});
+      b.addEventListener("click",async()=>{if(b.dataset.ok!=="1"){b.dataset.ok="1";b.textContent="¿Eliminar? Confirma";return}b.disabled=true;try{await db.collection("respuestas").doc(r._id).delete()}catch(e){b.disabled=false;b.textContent="No se pudo eliminar"}});
+      const d=new Date(r.ts);return [isNaN(d)?"":d.toLocaleString("es-MX",{dateStyle:"short",timeStyle:"short"}),tx(r,"nom")||"Sin nombre",A(r).org?label(QK.org,A(r).org):"",r.via==="codigo"?"Código":"Directo",b]}))));
+  v.append(out);
+}
+async function importCodes(ta,st){
+  const parts=ta.value.split("FAMNL1:").slice(1);let ok=0,bad=0;
+  if(!parts.length){st.textContent="No encontré ningún código. Deben empezar con FAMNL1:";return}
+  st.textContent="Registrando…";
+  for(const p of parts){
+    try{const m=p.trim().match(/^[A-Za-z0-9_\-=]+/);const rec=decode(m[0]);
+      if(rec.v!==1||!/^[a-z0-9]{8,16}$/.test(rec.rid)||typeof rec.a!=="object"||!rec.a||JSON.stringify(rec).length>20000)throw 0;
+      await db.collection("respuestas").doc(rec.rid).set({v:1,rid:rec.rid,ts:String(rec.ts).slice(0,30),a:rec.a,via:"codigo"});ok++}
+    catch(e){bad++}
+  }
+  st.textContent=ok+(ok===1?" respuesta registrada":" respuestas registradas")+(bad?". "+bad+" código"+(bad===1?"":"s")+" no se pudo leer; pide que lo copien completo.":".");
+  if(!bad)ta.value="";
+}
+async function csv(st){
+  const cols=[["fecha",r=>r.ts||""],["origen",r=>r.via||""]];
+  for(const q of QS){
+    if(q.type==="matrix")q.items.forEach(it=>cols.push([q.k+"_"+it[0],r=>{const m=A(r)[q.k];const v=m&&typeof m==="object"?m[it[0]]:"";return v===0?"No fui":v==null?"":v}]));
+    else if(q.type==="many")cols.push([q.k,r=>Array.isArray(A(r)[q.k])?A(r)[q.k].map(c=>label(q,c)).join("; "):""]);
+    else if(q.type==="one")cols.push([q.k,r=>A(r)[q.k]?label(q,A(r)[q.k]):""]);
+    else cols.push([q.k,r=>A(r)[q.k]==null?"":A(r)[q.k]]);
+  }
+  const esc=v=>{let s=String(v);if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
+  const text="﻿"+[cols.map(c=>esc(c[0])).join(",")].concat(rows.map(r=>cols.map(c=>esc(c[1](r))).join(","))).join("\r\n");
+  try{await downloads.save({filename:"respuestas-fam-sede-nuevo-leon.csv",data:text});st.textContent="Archivo descargado."}
+  catch(e){st.textContent=e&&e.code==="declined"?"Descarga cancelada.":"No se pudo descargar en esta vista."}
+}
+
+/* ---------- Arranque ---------- */
+function show(which){const r=which==="res";$("view-enc").hidden=r;$("view-res").hidden=!r;$("wrap").classList.toggle("wide",r);$("tab-enc").setAttribute("aria-selected",String(!r));$("tab-res").setAttribute("aria-selected",String(r))}
+$("tab-enc").addEventListener("click",()=>show("enc"));
+$("tab-res").addEventListener("click",()=>show("res"));
+renderSurvey(false);
+const ready=(async()=>{
+  if(!window.claude||!window.claude.use)return;
+  const [d,u,dl]=await Promise.all([claude.use("db"),claude.use("user"),claude.use("downloads")]);
+  if(!d||!u||!(await u.canEdit()))return;
+  db=d;downloads=dl;canWrite=true;
+  $("tabs").hidden=false;
+  $("lead").textContent="Estás viendo la encuesta como organizador: las respuestas que captures en este dispositivo se guardan directo, y en Resultados registras los códigos que te envíen los participantes.";
+  renderResults();
+  db.collection("respuestas").onSnapshot(s=>{rows=s.docs.map(x=>Object.assign({},x.data(),{_id:x.id})).sort((a,b)=>String(b.ts).localeCompare(String(a.ts)));renderResults()},()=>{});
+})().catch(()=>{});
+</script>
+
+</body></html>
