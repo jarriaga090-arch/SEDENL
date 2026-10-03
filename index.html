@@ -249,32 +249,40 @@ function go(dir){
 
 /* ---------- Envío ---------- */
 function clean(a){const o={};for(const q of QS){const v=a[q.k];if(v==null||v===""||(Array.isArray(v)&&!v.length))continue;o[q.k]=typeof v==="string"?v.trim().slice(0,600):v}return o}
-function encode(rec){const b=new TextEncoder().encode(JSON.stringify(rec));let s="";for(const x of b)s+=String.fromCharCode(x);return "FAMNL1:"+btoa(s).replace(/\+/g,"-").replace(/\//g,"_")}
-function decode(code){const s=atob(code.replace(/-/g,"+").replace(/_/g,"/"));const b=new Uint8Array(s.length);for(let i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return JSON.parse(new TextDecoder().decode(b))}
+
 async function submit(){
-  const rec={v:1,rid,ts:new Date().toISOString(),a:clean(ans)};
-  $("msg").textContent="Enviando…";
-  await ready;
-  let saved=false;
-  if(canWrite){try{await db.collection("respuestas").doc(rid).set(Object.assign({via:"directo"},rec));saved=true}catch(e){}}
-  clearDraft();
-  const box=el("div",{class:"qs"});
-  box.append(el("div",null,el("h2",{text:"Gracias por tu tiempo"}),el("p",{class:"secintro",text:saved?"La respuesta quedó registrada.":"Falta un paso para que tu opinión nos llegue."})));
-  if(saved){
-    box.append(el("div",{class:"nav"},el("button",{type:"button",class:"btn primary",text:"Capturar otra respuesta",onclick:reset})));
-  }else{
-    const code=encode(rec), pre=el("div",{class:"code",id:"code",text:code}), st=el("p",{class:"note",role:"status"});
-    box.append(el("section",{class:"q"},
-      el("h3",{text:"Copia este código y envíalo a tu anfitrión del FAM Trip"}),
-      el("p",{class:"hint",text:"Pégalo tal cual en WhatsApp o en un correo. Contiene tus respuestas; no hace falta escribir nada más."}),
-      pre,
-      el("div",{class:"nav"},el("button",{type:"button",class:"btn primary",text:"Copiar código",onclick:async()=>{
-        try{await navigator.clipboard.writeText(code);st.textContent="Código copiado."}
-        catch(e){const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);st.textContent="Código seleccionado. Cópialo con el menú de tu teléfono."}}})),
-      st));
+  const rec = clean(ans);
+  $("msg").textContent = "Enviando respuestas...";
+  
+  // URL de tu web app de Apps Script desplegada
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyrs9aCw1UNWbpbc6HYmbCd-T1I6kn9hoRpov-YPugcP_DCe1b4Fg947PJ_LfrFNRwt/exec";
+
+  try {
+    await fetch(scriptURL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(rec)
+    });
+
+    clearDraft();
+    const box = el("div", { class: "qs" });
+    box.append(
+      el("div", null, 
+        el("h2", { text: "¡Gracias por tu tiempo!" }),
+        el("p", { class: "secintro", text: "Tus respuestas han sido enviadas correctamente por correo electrónico." })
+      )
+    );
+    done = box;
+    renderSurvey(false);
+    window.scrollTo(0, 0);
+
+  } catch (error) {
+    console.error("Error al enviar:", error);
+    $("msg").textContent = "Hubo un problema al enviar la encuesta. Por favor, intenta de nuevo.";
   }
-  done=box;renderSurvey(false);window.scrollTo(0,0);
 }
+
 function reset(){ans={};rid=newRid();step=0;done=null;renderSurvey(false);window.scrollTo(0,0)}
 
 /* ---------- Resultados ---------- */
